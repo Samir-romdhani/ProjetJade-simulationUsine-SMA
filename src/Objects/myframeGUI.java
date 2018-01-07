@@ -17,6 +17,10 @@ public class myframeGUI extends JFrame {
     
     private DefaultTableModel tableModel;
     private DefaultTableModel ClientsModel;
+    
+    public DefaultTableModel getTableModel() {
+		return tableModel;
+	}
 
     public myframeGUI() {
 

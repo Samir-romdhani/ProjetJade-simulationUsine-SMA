@@ -30,19 +30,33 @@ public class projetjade {
 	   
 	      anotherProfile = new ProfileImpl(false);
 	      anotherContainer = runTime.createAgentContainer(anotherProfile);
-	      System.out.println("Starting up a Production...");
-	      agent = anotherContainer.createNewAgent("Atelier", "Agents.Atelier", null);
+	      System.out.println("Starting up a ControllerAgent...");
+	      agent = anotherContainer.createNewAgent("ControllerAgent", "GuiAgent.ControllerAgent", null);
 	      agent.start();
 	      Thread.sleep(900); 
+	      /*
+	      anotherProfile = new ProfileImpl(false);
+	      anotherContainer = runTime.createAgentContainer(anotherProfile);
+	      System.out.println("Starting up a Atelier...");
+	      agent = anotherContainer.createNewAgent("AtelierAgent", "GuiAgent.AtelierAgent", null);
+	      agent.start();
+	      Thread.sleep(900);
 	      
 	      anotherProfile = new ProfileImpl(false);
 	      anotherContainer = runTime.createAgentContainer(anotherProfile);
-	      System.out.println("Starting up a Demandes...");
-	      agent = anotherContainer.createNewAgent("Clients", "Agents.Client", null);
+	      System.out.println("Starting up a Fournisseurs ...");
+	      agent = anotherContainer.createNewAgent("Fournisseurs", "GuiAgent.Fournisseurs", null);
 	      agent.start();
 	      Thread.sleep(900);
-	     /*
+	       */
 	      
+
+	      
+	      
+
+
+	    
+	      /*
 	      anotherProfile = new ProfileImpl(false);
 	      anotherContainer = runTime.createAgentContainer(anotherProfile);
 	      System.out.println("Sending...");
@@ -62,8 +76,8 @@ public class projetjade {
 	      //jade.Boot.main(args0);
 	      //jade.Boot.main(args1);
 	      
-	      String[] args2 = {"-gui","Atelier:Agents.Atelier"};
-	      String[] args3 = {"-container","Client:Agents.Client"};
+	      String[] args2 = {"-gui","Fournisseurs:GuiAgent.Fournisseurs"};
+	      String[] args3 = {"-container","Atelier:GuiAgent.AtelierAgent"};
 	      String[] args4 = {"-container","Atelier:Agents.Atelier"};
 	      //jade.Boot.main(args2);
 	      //jade.Boot.main(args3);

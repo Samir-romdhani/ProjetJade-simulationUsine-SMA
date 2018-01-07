@@ -12,15 +12,33 @@ public class Produits implements Serializable{
 	private List<String> prduit ;
 	private List<Produits> listeprduit ;// = new ArrayList<>(); 
 	private String Nom ;
+	private String Tbois ;
 	private int stock;
 	private int fornisseur;
 	planches planche ;
+	/*
+	public Produits(String n, int s, int f, int np,String ch) {
+		this.Nom = n ;
+		this.fornisseur = f ;
+		this.stock = s ;
+		this.Tbois = ch;
+		planche = new planches(np)	;
+	}
+	*/
 	
 	public Produits(String n, int s, int f, int np) {
 		this.Nom = n ;
 		this.fornisseur = f ;
 		this.stock = s ;
 		planche = new planches(np)	;
+	}
+	
+	public String getTbois() {
+		return Tbois;
+	}
+	
+	public void setTbois(String tbois) {
+		Tbois = tbois;
 	}
 
 	public List<Produits> getListeprduit() {
@@ -30,6 +48,10 @@ public class Produits implements Serializable{
 		this.listeprduit = listeprduit;
 	}
 
+	
+	public planches getPlanche() {
+		return planche;
+	}
     
    
     
