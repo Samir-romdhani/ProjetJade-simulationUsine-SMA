@@ -13,5 +13,13 @@ public class planches implements Serializable {
 	public int getNb() {
 		return nb;
 	}
+	
+	public void setNb(int nb) {
+		this.nb = nb;
+	}
+	
+	public planches() {
+		// TODO Auto-generated constructor stub
+	}
 
 }

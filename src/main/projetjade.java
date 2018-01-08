@@ -19,10 +19,7 @@ public class projetjade {
 	      AgentController rma = mainContainer.createNewAgent("rma", "jade.tools.rma.rma", null);
 	      rma.start();
 	      Thread.sleep(900);
-	      
-
-
-
+	     
 	      Profile anotherProfile;
 	      AgentContainer anotherContainer;
 	      AgentController agent;
@@ -34,28 +31,7 @@ public class projetjade {
 	      agent = anotherContainer.createNewAgent("ControllerAgent", "GuiAgent.ControllerAgent", null);
 	      agent.start();
 	      Thread.sleep(900); 
-	      /*
-	      anotherProfile = new ProfileImpl(false);
-	      anotherContainer = runTime.createAgentContainer(anotherProfile);
-	      System.out.println("Starting up a Atelier...");
-	      agent = anotherContainer.createNewAgent("AtelierAgent", "GuiAgent.AtelierAgent", null);
-	      agent.start();
-	      Thread.sleep(900);
-	      
-	      anotherProfile = new ProfileImpl(false);
-	      anotherContainer = runTime.createAgentContainer(anotherProfile);
-	      System.out.println("Starting up a Fournisseurs ...");
-	      agent = anotherContainer.createNewAgent("Fournisseurs", "GuiAgent.Fournisseurs", null);
-	      agent.start();
-	      Thread.sleep(900);
-	       */
-	      
 
-	      
-	      
-
-
-	    
 	      /*
 	      anotherProfile = new ProfileImpl(false);
 	      anotherContainer = runTime.createAgentContainer(anotherProfile);

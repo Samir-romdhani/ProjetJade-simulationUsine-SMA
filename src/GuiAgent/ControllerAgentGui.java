@@ -22,8 +22,8 @@ public class ControllerAgentGui extends JFrame implements ActionListener {
 
    private JList list;
    private DefaultListModel listModel;
-   private JComboBox locations;
-   private JButton newCommandes,newAgent, quit;
+   //private JComboBox locations;
+   private JButton newCommandes, quit;
    private ControllerAgent myAgent;
    /*
    private JPanel contentPane;
@@ -51,12 +51,12 @@ public class ControllerAgentGui extends JFrame implements ActionListener {
       listModel = new DefaultListModel();
       list = new JList(listModel);
       
-      list.setBorder(new EmptyBorder(2,2,2,2));
+      list.setBorder(new EmptyBorder(0,0,0,0));
       list.setVisibleRowCount(12);
-      list.setFixedCellHeight(18);
+      list.setFixedCellHeight(16);
       list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
       pane.add(new JScrollPane(list), BorderLayout.NORTH);
-
+/*
       JPanel p = new JPanel();
       p.setLayout(new GridLayout(1,2,5,0));
       p.add(new JLabel("Destination :"));
@@ -64,7 +64,7 @@ public class ControllerAgentGui extends JFrame implements ActionListener {
       p.add(locations);
       pane.add(p, BorderLayout.CENTER);
 
-      /*
+      
       p = new JPanel();
       p.setLayout(new GridLayout(1,3,5,0));
       p.add(move = new JButton("Move"));
@@ -102,13 +102,13 @@ public class ControllerAgentGui extends JFrame implements ActionListener {
       pane.setBorder(new EmptyBorder(0,0,110,0));
 	  base.add(pane, BorderLayout.EAST);
       pane.setLayout(new GridLayout(2,1,0,5));
-      
+      /*
       pane.add(newAgent = new JButton("New agent"));
       newAgent.setToolTipText("Create a new agent");
       newAgent.addActionListener(this);
-      
+      */
       pane.add(newCommandes = new JButton("new Commandes"));
-      newAgent.setToolTipText("Create a new Commandes");
+      newCommandes.setToolTipText("Create a new Commandes");
       newCommandes.addActionListener(this);
       
       pane.add(quit = new JButton("Quit"));

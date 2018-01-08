@@ -6,9 +6,11 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.ReceiverBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.introspection.AddedBehaviour;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -23,7 +25,9 @@ import java.awt.*;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 public class AtelierAgent extends Agent {
@@ -31,9 +35,15 @@ public class AtelierAgent extends Agent {
     public ArrayList<Produits> produitList  ; 
     private List<String> produits = new ArrayList<>();
     
+    
+    private Map locations = new HashMap();
     private Vector agents = new Vector();
     transient protected ControllerAgentGui myGui;
     private jade.wrapper.AgentContainer home;
+    
+    
+    private int agentCnt = 1;
+    private int FouniseursagentCnt = 1;
     
 
     Produits p = new Produits();
@@ -63,7 +73,7 @@ public class AtelierAgent extends Agent {
 
    
     /////////////////////////
-    Produits p4 = new Produits("Lit", 11, 2, 7) ;
+    Produits p4 = new Produits("Lit", 10,2, 7) ;
     Produits p5 = new Produits("Chevet", 5, 2, 1) ;
     Produits p6 = new Produits("Armoire", 8, 2, 8) ;
 
@@ -109,8 +119,10 @@ public class AtelierAgent extends Agent {
     protected void setup() {
     	//System.out.println("Aaa");
     	//System.out.println(p.getListProduit().get(0));
-        
+        ControllerAgent a ;
         gui.setVisible(true);
+        //myGui = new ControllerAgentGui(this, locations.keySet());
+
         /*
         for(java.util.Iterator<Produits> it=produitList.iterator(); it.hasNext();) {
         	p=it.next();
@@ -127,11 +139,10 @@ public class AtelierAgent extends Agent {
          gui.setRows(list2);
          */
 	
-		
-		addBehaviour(new CyclicBehaviour() {
-			@Override
-			public void action() {
-				
+  	  // Program the main behaviour of this agent
+  		addBehaviour(new OneShotBehaviour() {				
+  			@Override
+  			public void action() {
 				for (int i = 0; i < produitList.size(); i++) {
 					
 					Produits p = produitList.get(i);
@@ -152,62 +163,81 @@ public class AtelierAgent extends Agent {
 		    					send(msgA);
 		    					send(msgP);
 		    					System.out.println("****AtelierAgent  send msg1****"+msgA.getContent()
-		    					                      +"de "+msgP.getContent());					
+		    					                      +" de "+msgP.getContent());					
 		    				}
 		    			});
 		    		}
 					
 					
 				}
-			
-
-    			
-				// receive du demande
+				}
+  		});
+        
+		
+		addBehaviour(new CyclicBehaviour() {
+			@Override
+			public void action() {
+				
+				
+				//
+				
+				
+				// receive du demande  clientsa.compareTo(sb)
 				ACLMessage msg1 = receive();
 				ACLMessage msg2 = receive();
-				if((msg1 != null) && (msg2 != null)) {
+				if((msg1 != null) && (msg2 != null) && ((msg1.getSender().getLocalName().compareTo("Client"))==1)) {
 										
 					JOptionPane.showMessageDialog(null, "message1 --"+msg1.getContent()
 					                                   +"message2 --"+msg2.getContent());
 					String[] liste = {msg1.getContent(),msg2.getContent()};
 					gui.setRowsDemande(liste);
-					System.out.println("****Atelier1  receive msg1****"+msg1.getContent());
-					System.out.println("****Atelier1  receive msg2****"+msg2.getContent());
+					//System.out.println("****Atelier1  receive msg1****"+msg1.getContent());
+					//System.out.println("****Atelier1  receive msg2****"+msg2.getContent());
+					System.out.println("****Atelier1  receive msg ----from-----"+msg1.getSender().getLocalName());
+					
+					init(msg1.getContent(),msg2.getContent());
+				}
+				else block();
+				
+					// receive msg from fournisseurs
+					ACLMessage msgF1 = receive();
+					ACLMessage msgF2 = receive();
+					ACLMessage msgF3 = receive();
+					if((msgF1 != null) && (msgF2 != null) && (msgF3 != null) 
+							&& (msgF1.getSender().getLocalName()).equals("Fournisseurs1"+FouniseursagentCnt++)) {
+											
+						JOptionPane.showMessageDialog(null, "message1 --"+msgF3.getContent()
+						                                   +"message2 --"+msgF1.getContent()
+						                                   +"message3 --"+msgF2.getContent());
+
+						/*System.out.println("****Atelier1  receive msg Fournisseyrs ****"+msgF3.getContent());
+						System.out.println("****Atelier1  receive msg Fournisseyrs ****"+msgF1.getContent());
+						System.out.println("****Atelier1  receive msg Fournisseyrs****"+msgF2.getContent());
+						*/
+						System.out.println("****Atelier1  receive ----from-----"+msgF1.getSender().getLocalName());
+						String[] liste = {msgF1.getContent(),msgF2.getContent()};
+						gui.setRowsDemande(liste);
+						/*
+						for (int i = 0; i < produitList.size(); i++) {
+							
+							Produits p = produitList.get(i);
+							
+				        	if(p.getNom().equals(msgF3.getContent())) {
+				        		p.setStock(Integer.parseInt(msgF2.getContent()));
+					        	String[] liste1 = {p.getNom(),Integer.toString(p.getstock()),Integer.toString(p.getfornisseur())};
+					        	gui.setRows(liste1);
+				        		
+				        	}
+						}
+						*/
+
 					
 					//doWait(500);
 					init(msg1.getContent(),msg2.getContent());
 				}
 				else block();
-				
-				
-				// receive msg from fournisseurs
-				ACLMessage msgF1 = receive();
-				ACLMessage msgF2 = receive();
-				ACLMessage msgF3 = receive();
-				if((msgF1 != null) && (msgF2 != null) && (msgF3 != null)) {
-										
-					JOptionPane.showMessageDialog(null, "message1 --"+msgF3.getContent()
-					                                   +"message2 --"+msgF1.getContent()
-					                                   +"message3 --"+msgF2.getContent());
-					
-					 for(java.util.Iterator<Produits> it=produitList.iterator(); it.hasNext();) {
-				        	p=it.next();
-				        	if(p.getNom().equals(msgF2.getContent())) {
-				        		p.setStock(Integer.parseInt(msgF2.getContent()));
-					        	String[] liste1 = {p.getNom(),Integer.toString(p.getstock()),Integer.toString(p.getfornisseur())};
-					        	gui.setRows(liste1);
-				        	}
-				        }
-					//String[] liste = {msgF2.getContent(),msgF2.getContent()};
-					//gui.setRowsDemande(liste);
-					System.out.println("****Atelier1  receive msg Fournisseyrs ****"+msgF3.getContent());
-					System.out.println("****Atelier1  receive msg Fournisseyrs ****"+msgF1.getContent());
-					System.out.println("****Atelier1  receive msg Fournisseyrs****"+msgF2.getContent());
-										
-					
 
-				}
-				else block();
+				
 			}
 		});
 		
@@ -248,6 +278,35 @@ public class AtelierAgent extends Agent {
     
     void init(String pr,String qt) { 
     	
+    	
+		for (int i = 0; i < produitList.size(); i++) {
+			
+			Produits p = produitList.get(i);
+			
+        	if(p.getstock()<=0) {
+				
+    			addBehaviour(new OneShotBehaviour() {
+    				@Override
+    				public void action() {
+    					System.out.println("****AtelierAgent  send msg1 to controller Agent****");
+    	        		ACLMessage msgA = new ACLMessage(ACLMessage.INFORM);
+    	        		ACLMessage msgP = new ACLMessage(ACLMessage.INFORM);
+    	        		msgA.addReceiver(new AID("ControllerAgent", AID.ISLOCALNAME));
+    	        		msgP.addReceiver(new AID("ControllerAgent", AID.ISLOCALNAME));
+    	        		msgA.setContent("Une rupture de stock");
+    	        		msgP.setContent(p.getNom());
+    	        		msgA.setLanguage("Prolog");msgP.setLanguage("Prolog");
+    					send(msgA);
+    					send(msgP);
+    					System.out.println("****AtelierAgent  send msg1****"+msgA.getContent()
+    					                      +"de "+msgP.getContent());					
+    				}
+    			});
+    		}
+			
+			
+		}
+    	
     	if (gui.getTableModel().getRowCount() > 0) {
     	    for (int i = gui.getTableModel().getRowCount() - 1; i > -1; i--) {
     	    	gui.getTableModel().removeRow(i);
@@ -258,57 +317,49 @@ public class AtelierAgent extends Agent {
         	Produits p = produitList.get(i);
         	//p.setStock(500);
         	if(p.getNom().equals(pr)) {
-        		if((Integer.parseInt(qt))<=(p.getstock())) {
-        			p.setStock(p.getstock()-(Integer.parseInt(qt)));
-        			
-		        	if((p.getstock())<=0) {
-	        			addBehaviour(new OneShotBehaviour() {
-	        				@Override
-	        				public void action() {
-	        					System.out.println("****AtelierAgent  send msg1 dans onebehaviour****");
-	        	        		ACLMessage msgA = new ACLMessage(ACLMessage.INFORM);
-	        	        		ACLMessage msgP = new ACLMessage(ACLMessage.INFORM);
-	        	        		msgA.addReceiver(new AID("ControllerAgent", AID.ISLOCALNAME));
-	        	        		msgP.addReceiver(new AID("ControllerAgent", AID.ISLOCALNAME));
-	        	        		msgA.setContent("Une rupture de stock");
-	        	        		msgP.setContent(p.getNom());
-	        	        		msgA.setLanguage("Prolog");msgP.setLanguage("Prolog");
-	        					send(msgA);
-	        					send(msgP);
-	        					System.out.println("****AtelierAgent  send msg1****"+msgA.getContent()
-	        					                      +"de "+msgP.getContent());					
+        		p.setStock(p.getstock()-(Integer.parseInt(qt)));
+        		 //System.out.println("p.setStock(p.getstock()-(Integer.parseInt(qt))) == **"+p.getstock());
+        		if((p.getstock())>0) {
+        			  System.out.println("**produits livré");
+		        		String[] liste1 = {p.getNom(),Integer.toString(p.getstock()),Integer.toString(p.getfornisseur())};
+			        	gui.setRows(liste1);
+			        	 
 
-	        				
-	        					/*jade.wrapper.AgentController a = null;
-	  					      try {
-	  					          String nameF = "Fournisseurs";
-	  					          a = home.createNewAgent(nameF, Fournisseurs.class.getName(), null);
-	  						        a.start();
-	  						        agents.add(nameF);
-	  						        myGui.updateList(agents);
-	  						} catch (Exception e) {
-	  							 System.out.println("Problem creating new agent");
-	  						}*/
-	        				}
-	        			});
-						
-	        		String[] liste1 = {p.getNom(),Integer.toString(p.getstock()),Integer.toString(p.getfornisseur())};
-		        	gui.setRows(liste1);						
-		        	}
-        			//System.out.println("****p.getNom()  ****"+p.getNom());
-        			//System.out.println("****msg1.getContent() ****"+pr);
-
+	        			
+        		        }
+	        	      else {
+	        	    	//  System.out.println("**produits p.getstock())<=0");
+				        	
+		        			addBehaviour(new OneShotBehaviour() {
+		        				@Override
+		        				public void action() {
+		        					System.out.println("****AtelierAgent  send msg1 dans onebehaviour****");
+		        	        		ACLMessage msgA = new ACLMessage(ACLMessage.INFORM);
+		        	        		ACLMessage msgP = new ACLMessage(ACLMessage.INFORM);
+		        	        		msgA.addReceiver(new AID("ControllerAgent", AID.ISLOCALNAME));
+		        	        		msgP.addReceiver(new AID("ControllerAgent", AID.ISLOCALNAME));
+		        	        		msgA.setContent("Une rupture de stock");
+		        	        		msgP.setContent(p.getNom());
+		        	        		msgA.setLanguage("Prolog");msgP.setLanguage("Prolog");
+		        					send(msgA);
+		        					send(msgP);
+		        					System.out.println("****AtelierAgent  send msg1****"+msgA.getContent()
+		        					                      +"de "+msgP.getContent());
+		        				}
+		        			}); 
+		        			
+	          		    String[] liste1 = {p.getNom(),Integer.toString(p.getstock()),Integer.toString(p.getfornisseur())};
+	  	        	    gui.setRows(liste1);
+	          	             }
         		}
-        	}
-        	else {
-        		String[] liste1 = {p.getNom(),Integer.toString(p.getstock()),Integer.toString(p.getfornisseur())};
-	        	gui.setRows(liste1);
-        	}			        	        	
+        	   else {
+        		 //  System.out.println("**produits != produit demandé");  
+        	   String[] liste1 = {p.getNom(),Integer.toString(p.getstock()),Integer.toString(p.getfornisseur())};
+	           gui.setRows(liste1);
+        	  }		
+        	
         }//for
 
-    }
-        
-        
-
+}
 
 }

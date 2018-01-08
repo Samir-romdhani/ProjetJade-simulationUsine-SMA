@@ -114,18 +114,9 @@ public class FournisseursAgent extends GuiAgent {
 				}
 			});
    }
+   
+   
    void init() {
-// -------------
-
-	  // Register language and ontology
-	  getContentManager().registerLanguage(new SLCodec());
-	  getContentManager().registerOntology(MobilityOntology.getInstance());
-
-	  // Create and display the gui
-	 // myGui = new FournisseursAgentGui(this);
-	 // myGui.setVisible(true);
-	 //myGui.setLocation(destination.getName());
-	  
    }
    protected void onGuiEvent(GuiEvent e) {
    }

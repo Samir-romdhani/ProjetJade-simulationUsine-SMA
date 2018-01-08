@@ -32,12 +32,16 @@ public class ControllerAgent extends GuiAgent {
    private Map locations = new HashMap();
    private Vector agents = new Vector();
    private ArrayList<Produits> agents1 = new ArrayList<Produits>() ;
-   private int agentCnt = 0;
-   private int FouniseursagentCnt = 1;
+   static int agentCnt = 1;
+   static int FouniseursagentCnt = 1;
    private int agentAtelierCnt = 1;
    private int command;
    transient protected ControllerAgentGui myGui;
    
+   
+   public Map getLocations() {
+	return locations;
+}
 
    public static final int QUIT = 0;
    public static final int NEW_AGENT = 1;
@@ -115,17 +119,20 @@ public class ControllerAgent extends GuiAgent {
       try {
          // Create the container objects
          home = runtime.createAgentContainer(new ProfileImpl());
-         container = new jade.wrapper.AgentContainer[3];
-         for (int i = 0; i < 2; i++){
+         
+         container = new jade.wrapper.AgentContainer[1];
+         for (int i = 0; i <2; i++){
             container[0] = runtime.createAgentContainer(new ProfileImpl());
 	     }
-	     doWait(2000);
+         
+	     //doWait(2000);
 	     
 
 	     // Get available locations with AMS
-	     sendRequest(new Action(getAMS(), new QueryPlatformLocationsAction()));
+	     //sendRequest(new Action(getAMS(), new QueryPlatformLocationsAction()));
 
 	     //Receive response from AMS
+	     /*
          MessageTemplate mt = MessageTemplate.and(
 			                  MessageTemplate.MatchSender(getAMS()),
 			                  MessageTemplate.MatchPerformative(ACLMessage.INFORM));
@@ -137,6 +144,8 @@ public class ControllerAgent extends GuiAgent {
             Location loc = (Location)it.next();
             locations.put(loc.getName(), loc);
 		 }
+         
+         */
 	  }
 	  catch (Exception e) { e.printStackTrace(); }
 
@@ -159,6 +168,7 @@ public class ControllerAgent extends GuiAgent {
 	} catch (Exception e) {
 		 System.out.println("Problem creating new agent");
 	}
+      
       //receive msg from Atelier about product to do appel for founisseur Agent
 		addBehaviour(new CyclicBehaviour() {
 			@Override
@@ -168,7 +178,7 @@ public class ControllerAgent extends GuiAgent {
 				ACLMessage msgA = receive();
 				ACLMessage msgP = receive();
 				if((msgA != null)&&(msgP != null)) {
-					JOptionPane.showMessageDialog(null, "message1 --"+msgA.getContent()+msgP.getContent());
+					JOptionPane.showMessageDialog(null, "message -->"+msgA.getContent()+msgP.getContent());
 					//gui.setRowsDemande(liste);
 					jade.wrapper.AgentController a = null;
 				      try {
@@ -179,13 +189,15 @@ public class ControllerAgent extends GuiAgent {
 					        a.start();
 					        agents.add(nameF+" : "+msgP.getContent());
 					        myGui.updateList(agents);
+					        System.out.println("creating new agent");
 					} catch (Exception e) {
-						 System.out.println("Problem creating new agent");
+						 System.out.println("Problem creating new Fournisseurs");
 					}
 				}
 				else block();						
 			}						
 		});
+		
       
 
 
@@ -216,13 +228,13 @@ public class ControllerAgent extends GuiAgent {
 	         try {
 	            Object[] args = new Object[2];
 	            args[0] = getAID();
-	            String name = "Client "+agentCnt++;
+	            String name = "Client"+agentCnt++;
 	            a = home.createNewAgent(name, ClientAgent.class.getName(), args);
 		        a.start();
 		        agents.add(name);
 		        myGui.updateList(agents);
 		        
-		        String name1 = "La commande livrée au client";
+		        String name1 = "Commande livrée";
 		        agents.add(name1);
 		        myGui.updateList(agents);
 		        
@@ -230,7 +242,7 @@ public class ControllerAgent extends GuiAgent {
 				addBehaviour(new CyclicBehaviour() {
 					@Override
 					public void action() {
-						//System.out.println("****ConrollersAgent  receive msg1**cc**");
+						//System.out.println("****ConrollersAgent  receive msg1**cc*2*");
 						// receive du demande
 						ACLMessage msgA = receive();
 						ACLMessage msgP = receive();
@@ -260,24 +272,6 @@ public class ControllerAgent extends GuiAgent {
 		     }
 	         return;
 		  }
-	  
-	  if (command == NEW_AGENT) {
-
-	     jade.wrapper.AgentController a = null;
-         try {
-            Object[] args = new Object[2];
-            args[0] = getAID();
-            String name = "Agent"+agentCnt++;
-            a = home.createNewAgent(name, MobileAgent.class.getName(), args);
-	        a.start();
-	        agents.add(name);
-	        myGui.updateList(agents);
-	     }
-         catch (Exception ex) {
-		    System.out.println("Problem creating new agent");
-	     }
-         return;
-	  }
 	  
 	  /*
 	  

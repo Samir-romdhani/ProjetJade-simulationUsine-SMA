@@ -13,7 +13,7 @@ public class myframeGUI extends JFrame {
     private JTable ProduitsTable;
     private JTable Clients;
     private String[] column = {"Nom","Stock","fournisseurs"};
-    private String[] column1 = {"Nom du Produit","Quantité"};
+    private String[] column1 = {"Produit","Quantité"};
     
     private DefaultTableModel tableModel;
     private DefaultTableModel ClientsModel;
@@ -25,7 +25,7 @@ public class myframeGUI extends JFrame {
     public myframeGUI() {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(500, 500, 600, 620);
+        setBounds(500, 500, 650, 420);
         
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
