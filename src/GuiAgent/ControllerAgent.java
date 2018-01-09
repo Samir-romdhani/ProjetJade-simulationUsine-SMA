@@ -121,9 +121,10 @@ public class ControllerAgent extends GuiAgent {
          home = runtime.createAgentContainer(new ProfileImpl());
          
          container = new jade.wrapper.AgentContainer[1];
-         for (int i = 0; i <2; i++){
+         /*for (int i = 0; i <2; i++){
             container[0] = runtime.createAgentContainer(new ProfileImpl());
 	     }
+	     */
          
 	     //doWait(2000);
 	     
@@ -235,8 +236,8 @@ public class ControllerAgent extends GuiAgent {
 		        myGui.updateList(agents);
 		        
 		        String name1 = "Commande livrée";
-		        agents.add(name1);
-		        myGui.updateList(agents);
+		        //agents.add(name1);
+		        //myGui.updateList(agents);
 		        
 		        
 				addBehaviour(new CyclicBehaviour() {

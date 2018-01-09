@@ -107,6 +107,11 @@ public class ControllerAgentGui extends JFrame implements ActionListener {
       newAgent.setToolTipText("Create a new agent");
       newAgent.addActionListener(this);
       */
+      JLabel client = new JLabel();
+      client.setFont(new Font("Tahoma", Font.PLAIN, 15));
+      //livraison.setBounds(250, 100, 250, 490);
+      //contentPane.add(livraison);
+      pane.add(client = new JLabel("Clients :"));
       pane.add(newCommandes = new JButton("new Commandes"));
       newCommandes.setToolTipText("Create a new Commandes");
       newCommandes.addActionListener(this);

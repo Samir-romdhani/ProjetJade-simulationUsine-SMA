@@ -18,6 +18,8 @@ public class myframeGUI extends JFrame {
     private DefaultTableModel tableModel;
     private DefaultTableModel ClientsModel;
     
+    private JTextField info;
+    
     public DefaultTableModel getTableModel() {
 		return tableModel;
 	}
@@ -68,8 +70,21 @@ public class myframeGUI extends JFrame {
         Clients.setFont(new Font("Tahoma", Font.PLAIN, 15));
         Clients.setBounds(350, 70, 300, 25);
         contentPane.add(Clients);
+        Clients.add(info = new JTextField(30), BorderLayout.CENTER);
         String[] list2 = {"Nom du Produit","Quantité"};
         setRowsDemande(list2);
+        	  
+        info = new JTextField(30);
+        JLabel livraison = new JLabel("livraison :");
+        livraison.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        livraison.setBounds(250, 100, 250, 490);
+        //contentPane.add(livraison);
+        //contentPane.add(info, BorderLayout.CENTER);
+        //contentPane.add(info);
+        //livraison.setBounds(380, 100, 230, 200);
+        //contentPane.add(livraison, BorderLayout.CENTER);
+        //livraison.add(info = new JTextField(30));
+        //info.setVisible(true);
         
         
     }

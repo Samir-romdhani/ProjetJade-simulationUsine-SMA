@@ -67,21 +67,21 @@ public class AtelierAgent extends Agent {
 		return TypeBois;
 	}
     
-    Produits p1 = new Produits("Table", 8, 4, 5) ;
-    Produits p2 = new Produits("Chaise", 7, 4, 2) ;
-    Produits p3 = new Produits("Buffet", 10, 4, 6) ;
+    Produits p1 = new Produits("Table", 20, 4, 5) ;
+    Produits p2 = new Produits("Chaise", 120, 4, 2) ;
+    Produits p3 = new Produits("Buffet", 20, 4, 6) ;
 
    
     /////////////////////////
     Produits p4 = new Produits("Lit", 10,2, 7) ;
-    Produits p5 = new Produits("Chevet", 5, 2, 1) ;
-    Produits p6 = new Produits("Armoire", 8, 2, 8) ;
+    Produits p5 = new Produits("Chevet", 20, 2, 1) ;
+    Produits p6 = new Produits("Armoire",10, 2, 8) ;
 
 
    ////////////////////////////////////////
-    Produits p7 = new Produits("Banquette", 12, 3, 6) ;
-    Produits p8 = new Produits("Fauteuil", 2, 3, 3) ;
-    Produits p9 = new Produits("Etagère", 6, 3, 8) ;
+    Produits p7 = new Produits("Banquette", 30, 3, 6) ;
+    Produits p8 = new Produits("Fauteuil", 60, 3, 3) ;
+    Produits p9 = new Produits("Etagère", 30, 3, 8) ;
 
     public AtelierAgent() {
     	TypeBois.add("Chêne");
@@ -278,7 +278,7 @@ public class AtelierAgent extends Agent {
     
     void init(String pr,String qt) { 
     	
-    	
+    	/*
 		for (int i = 0; i < produitList.size(); i++) {
 			
 			Produits p = produitList.get(i);
@@ -306,6 +306,7 @@ public class AtelierAgent extends Agent {
 			
 			
 		}
+		*/
     	
     	if (gui.getTableModel().getRowCount() > 0) {
     	    for (int i = gui.getTableModel().getRowCount() - 1; i > -1; i--) {
