@@ -36,14 +36,14 @@ public class AtelierAgent extends Agent {
     private List<String> produits = new ArrayList<>();
     
     
-    private Map locations = new HashMap();
-    private Vector agents = new Vector();
-    transient protected ControllerAgentGui myGui;
-    private jade.wrapper.AgentContainer home;
+    //private Map locations = new HashMap();
+    //private Vector agents = new Vector();
+    //transient protected ControllerAgentGui myGui;
+    //private jade.wrapper.AgentContainer home;
     
     
-    private int agentCnt = 1;
-    private int FouniseursagentCnt = 1;
+    //private int agentCnt = 1;
+    //private int FouniseursagentCnt = 1;
     
 
     Produits p = new Produits();
@@ -182,7 +182,7 @@ public class AtelierAgent extends Agent {
 				//
 				
 				
-				// receive du demande  clientsa.compareTo(sb)
+				// receive du demande  
 				ACLMessage msg1 = receive();
 				ACLMessage msg2 = receive();
 				if((msg1 != null) && (msg2 != null) && ((msg1.getSender().getLocalName().compareTo("Client"))==1)) {
@@ -193,7 +193,7 @@ public class AtelierAgent extends Agent {
 					gui.setRowsDemande(liste);
 					//System.out.println("****Atelier1  receive msg1****"+msg1.getContent());
 					//System.out.println("****Atelier1  receive msg2****"+msg2.getContent());
-					System.out.println("****Atelier1  receive msg ----from-----"+msg1.getSender().getLocalName());
+					System.out.println("****Atelier  receive msg ----from-----"+msg1.getSender().getLocalName());
 					
 					init(msg1.getContent(),msg2.getContent());
 				}
@@ -203,33 +203,35 @@ public class AtelierAgent extends Agent {
 					ACLMessage msgF1 = receive();
 					ACLMessage msgF2 = receive();
 					ACLMessage msgF3 = receive();
-					if((msgF1 != null) && (msgF2 != null) && (msgF3 != null) 
-							&& (msgF1.getSender().getLocalName()).equals("Fournisseurs1"+FouniseursagentCnt++)) {
+					if((msgF1 != null) && (msgF2 != null) && (msgF3 != null)) {
+							//&& (msgF1.getSender().getLocalName()).equals("Fournisseurs1"+FouniseursagentCnt++)) {
 											
 						JOptionPane.showMessageDialog(null, "message1 --"+msgF3.getContent()
 						                                   +"message2 --"+msgF1.getContent()
 						                                   +"message3 --"+msgF2.getContent());
-
-						/*System.out.println("****Atelier1  receive msg Fournisseyrs ****"+msgF3.getContent());
-						System.out.println("****Atelier1  receive msg Fournisseyrs ****"+msgF1.getContent());
-						System.out.println("****Atelier1  receive msg Fournisseyrs****"+msgF2.getContent());
-						*/
-						System.out.println("****Atelier1  receive ----from-----"+msgF1.getSender().getLocalName());
-						String[] liste = {msgF1.getContent(),msgF2.getContent()};
-						gui.setRowsDemande(liste);
-						/*
+						
+						System.out.println("****Atelier  receive ----from-----"+msgF1.getSender().getLocalName());
+						//String[] liste = {msgF1.getContent(),msgF2.getContent()};
+						//gui.setRowsDemande(liste);
+						
+						
+						System.out.println("****Atelier  receive msg Fournisseyrs ****"+msgF3.getContent());
+						System.out.println("****Atelier  receive msg Fournisseyrs ****"+msgF1.getContent());
+						System.out.println("****Atelier  receive msg Fournisseyrs****"+msgF2.getContent());
+					
+						
 						for (int i = 0; i < produitList.size(); i++) {
 							
 							Produits p = produitList.get(i);
 							
 				        	if(p.getNom().equals(msgF3.getContent())) {
-				        		p.setStock(Integer.parseInt(msgF2.getContent()));
+				        		p.setStock(p.getstock()+1);
 					        	String[] liste1 = {p.getNom(),Integer.toString(p.getstock()),Integer.toString(p.getfornisseur())};
 					        	gui.setRows(liste1);
 				        		
 				        	}
 						}
-						*/
+						
 
 					
 					//doWait(500);
@@ -278,35 +280,6 @@ public class AtelierAgent extends Agent {
     
     void init(String pr,String qt) { 
     	
-    	/*
-		for (int i = 0; i < produitList.size(); i++) {
-			
-			Produits p = produitList.get(i);
-			
-        	if(p.getstock()<=0) {
-				
-    			addBehaviour(new OneShotBehaviour() {
-    				@Override
-    				public void action() {
-    					System.out.println("****AtelierAgent  send msg1 to controller Agent****");
-    	        		ACLMessage msgA = new ACLMessage(ACLMessage.INFORM);
-    	        		ACLMessage msgP = new ACLMessage(ACLMessage.INFORM);
-    	        		msgA.addReceiver(new AID("ControllerAgent", AID.ISLOCALNAME));
-    	        		msgP.addReceiver(new AID("ControllerAgent", AID.ISLOCALNAME));
-    	        		msgA.setContent("Une rupture de stock");
-    	        		msgP.setContent(p.getNom());
-    	        		msgA.setLanguage("Prolog");msgP.setLanguage("Prolog");
-    					send(msgA);
-    					send(msgP);
-    					System.out.println("****AtelierAgent  send msg1****"+msgA.getContent()
-    					                      +"de "+msgP.getContent());					
-    				}
-    			});
-    		}
-			
-			
-		}
-		*/
     	
     	if (gui.getTableModel().getRowCount() > 0) {
     	    for (int i = gui.getTableModel().getRowCount() - 1; i > -1; i--) {
@@ -323,18 +296,14 @@ public class AtelierAgent extends Agent {
         		if((p.getstock())>0) {
         			  System.out.println("**produits livré");
 		        		String[] liste1 = {p.getNom(),Integer.toString(p.getstock()),Integer.toString(p.getfornisseur())};
-			        	gui.setRows(liste1);
-			        	 
-
-	        			
+			        	gui.setRows(liste1);	
         		        }
 	        	      else {
 	        	    	//  System.out.println("**produits p.getstock())<=0");
-				        	
 		        			addBehaviour(new OneShotBehaviour() {
 		        				@Override
 		        				public void action() {
-		        					System.out.println("****AtelierAgent  send msg1 dans onebehaviour****");
+		        					//System.out.println("****AtelierAgent  send msg1 dans onebehaviour****");
 		        	        		ACLMessage msgA = new ACLMessage(ACLMessage.INFORM);
 		        	        		ACLMessage msgP = new ACLMessage(ACLMessage.INFORM);
 		        	        		msgA.addReceiver(new AID("ControllerAgent", AID.ISLOCALNAME));
@@ -344,7 +313,7 @@ public class AtelierAgent extends Agent {
 		        	        		msgA.setLanguage("Prolog");msgP.setLanguage("Prolog");
 		        					send(msgA);
 		        					send(msgP);
-		        					System.out.println("****AtelierAgent  send msg1****"+msgA.getContent()
+		        					System.out.println("****AtelierAgent  send msg****"+msgA.getContent()
 		        					                      +"de "+msgP.getContent());
 		        				}
 		        			}); 

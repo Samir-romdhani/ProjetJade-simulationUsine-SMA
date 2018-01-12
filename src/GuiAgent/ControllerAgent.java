@@ -44,10 +44,6 @@ public class ControllerAgent extends GuiAgent {
 }
 
    public static final int QUIT = 0;
-   public static final int NEW_AGENT = 1;
-   public static final int MOVE_AGENT = 2;
-   public static final int CLONE_AGENT = 3;
-   public static final int KILL_AGENT = 4;
    public static final int NEW_Commande = 5;
    
    private ArrayList<Produits> produitList = new ArrayList<>();
@@ -60,7 +56,7 @@ public class ControllerAgent extends GuiAgent {
 		return produitList;
 	}
     
-    ArrayList<String> TypeBois ;//= new ArrayList();
+    ArrayList<String> TypeBois ;
     
     public ArrayList<String> getTypeBois() {
 		return TypeBois;
@@ -112,8 +108,8 @@ public class ControllerAgent extends GuiAgent {
    protected void setup() {
 	  // Register language and ontology
 	   
-	  getContentManager().registerLanguage(new SLCodec());
-	  getContentManager().registerOntology(MobilityOntology.getInstance());
+	  //getContentManager().registerLanguage(new SLCodec());
+	  //getContentManager().registerOntology(MobilityOntology.getInstance());
 	 
 
       try {
@@ -127,26 +123,6 @@ public class ControllerAgent extends GuiAgent {
 	     */
          
 	     //doWait(2000);
-	     
-
-	     // Get available locations with AMS
-	     //sendRequest(new Action(getAMS(), new QueryPlatformLocationsAction()));
-
-	     //Receive response from AMS
-	     /*
-         MessageTemplate mt = MessageTemplate.and(
-			                  MessageTemplate.MatchSender(getAMS()),
-			                  MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-         ACLMessage resp = blockingReceive(mt);
-         ContentElement ce = getContentManager().extractContent(resp);
-         Result result = (Result) ce;
-         jade.util.leap.Iterator it = result.getItems().iterator();
-         while (it.hasNext()) {
-            Location loc = (Location)it.next();
-            locations.put(loc.getName(), loc);
-		 }
-         
-         */
 	  }
 	  catch (Exception e) { e.printStackTrace(); }
 
@@ -165,6 +141,14 @@ public class ControllerAgent extends GuiAgent {
       a = home.createNewAgent(nameAtelier, AtelierAgent.class.getName(), null);
       a.start();
       agents.add(nameAtelier);
+      myGui.updateList(agents);
+      //ClientAgent
+      /*
+	  String nameClient = "ClientAgent";
+      a = home.createNewAgent(nameAtelier, ClientAgent.class.getName(), null);
+      a.start();
+      agents.add(nameClient);
+      */
       myGui.updateList(agents);
 	} catch (Exception e) {
 		 System.out.println("Problem creating new agent");
@@ -206,7 +190,6 @@ public class ControllerAgent extends GuiAgent {
 
 
    protected void onGuiEvent(GuiEvent ev) {
-// ----------------------------------------
 
 	  command = ev.getType();
 	  
@@ -229,21 +212,16 @@ public class ControllerAgent extends GuiAgent {
 	         try {
 	            Object[] args = new Object[2];
 	            args[0] = getAID();
-	            String name = "Client"+agentCnt++;
+	            String name = "Client"+agentCnt++; 
 	            a = home.createNewAgent(name, ClientAgent.class.getName(), args);
 		        a.start();
 		        agents.add(name);
 		        myGui.updateList(agents);
 		        
-		        String name1 = "Commande livrée";
-		        //agents.add(name1);
-		        //myGui.updateList(agents);
-		        
-		        
+		        //receive from atelier : case repture stock
 				addBehaviour(new CyclicBehaviour() {
 					@Override
 					public void action() {
-						//System.out.println("****ConrollersAgent  receive msg1**cc*2*");
 						// receive du demande
 						ACLMessage msgA = receive();
 						ACLMessage msgP = receive();
@@ -273,50 +251,7 @@ public class ControllerAgent extends GuiAgent {
 		     }
 	         return;
 		  }
-	  
-	  /*
-	  
-      String agentName = (String)ev.getParameter(0);
-      AID aid = new AID(agentName, AID.ISLOCALNAME);
-      System.out.println("aid = agentName : "+agentName);
 
-	  if (command == MOVE_AGENT) {
-
-         String destName = (String)ev.getParameter(1);
-         Location dest = (Location)locations.get(destName);
-         MobileAgentDescription mad = new MobileAgentDescription();
-         mad.setName(aid);
-         mad.setDestination(dest);
-         MoveAction ma = new MoveAction();
-         ma.setMobileAgentDescription(mad);
-         sendRequest(new Action(aid, ma));
-	  }
-      else if (command == CLONE_AGENT) {
-
-         String destName = (String)ev.getParameter(1);
-         Location dest = (Location)locations.get(destName);
-         MobileAgentDescription mad = new MobileAgentDescription();
-         mad.setName(aid);
-         mad.setDestination(dest);
-         String newName = "Clone-"+agentName;
-         CloneAction ca = new CloneAction();
-         ca.setNewName(newName);
-         ca.setMobileAgentDescription(mad);
-         sendRequest(new Action(aid, ca));
-         agents.add(newName);
-         myGui.updateList(agents);
-	  }
-      else if (command == KILL_AGENT) {
-
-         KillAgent ka = new KillAgent();
-         ka.setAgent(aid);
-         sendRequest(new Action(aid, ka));
-	     agents.remove(agentName);
-		 //myGui.updateList(agents);
-		 myGui.updateList(agents);
-		 
-	  }
-	  */
    }
    
    
@@ -337,19 +272,4 @@ public class ControllerAgent extends GuiAgent {
    }
    
 
-
-   void sendRequest(Action action) {
-// ---------------------------------
-
-      ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
-      request.setLanguage(new SLCodec().getName());
-      request.setOntology(MobilityOntology.getInstance().getName());
-      try {
-	     getContentManager().fillContent(request, action);
-	     request.addReceiver(action.getActor());
-	     send(request);
-	  }
-	  catch (Exception ex) { ex.printStackTrace(); }
-   }
-
-}//class Controller
+}

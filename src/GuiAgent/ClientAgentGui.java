@@ -12,15 +12,12 @@ import jade.gui1.*;
 public class ClientAgentGui extends JFrame {
 // -----------------------------------------
 
-   private JTextField location;
+   private JTextField message;
    private JTextField info;
    private ClientAgent myAgent;
 
    public ClientAgentGui(ClientAgent a) {
-// --------------------------------------
 
-	  myAgent = a;
-      setTitle(myAgent.getLocalName());
 
 	  // Add button and text field
       Container c = getContentPane();
@@ -33,9 +30,9 @@ public class ClientAgentGui extends JFrame {
 	  pane.add(new JLabel("CLIENT  SEND: "), BorderLayout.WEST);
 	  
 	  
-	  pane.add(location = new JTextField(15), BorderLayout.EAST);
-	  location.setEditable(false);
-	  location.setBackground(Color.white);
+	  pane.add(message = new JTextField(15), BorderLayout.EAST);
+	  message.setEditable(false);
+	  message.setBackground(Color.white);
 	  base.add(pane, BorderLayout.NORTH);
 	  
 	  
@@ -55,9 +52,9 @@ public class ClientAgentGui extends JFrame {
 	  setLocation(r.x + r.width-getWidth(), r.y);
    }
 
-   public void setLocation(String loc){
+   public void setmessage(String loc){
 
-      this.location.setText(loc);
+      this.message.setText(loc);
    }
    
 

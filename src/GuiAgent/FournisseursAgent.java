@@ -16,9 +16,10 @@ import jade.content.lang.sl.*;
 import jade.content.onto.basic.*;
 import jade.domain.*;
 import jade.domain.mobility.*;
-import jade.domain.JADEAgentManagement.*;
+import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import jade.gui1.*;
+import jade.domain.JADEAgentManagement.*;
 
 public class FournisseursAgent extends GuiAgent {
 // ----------------------------------------

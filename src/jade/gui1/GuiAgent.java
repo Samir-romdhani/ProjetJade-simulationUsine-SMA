@@ -6,7 +6,9 @@ import java.util.Vector;
 //Import required Jade classes
 import jade.core.*;
 import jade.core.behaviours.*;
+import jade.gui1.GuiAgent;
 import jade.gui.GuiEvent;
+//import jade.gui.GuiHandlerBehaviour;
 
 
 public abstract class GuiAgent extends Agent {
